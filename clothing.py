@@ -33,28 +33,60 @@ class Clothing:
         self._bracelet = bracelet
 
     def __repr__(self) -> str:
-        value = ''
-
+        to_print = {}
         if self._hair:
-            value += f'Hair --- {self._italic_value(self._hair)}\n'
+            to_print['Hair'] = self._italic_value(self._hair)
 
         if self._collar:
-            value += f'Collar --- {self._italic_value(self._collar)}\n'
+            to_print['Collar'] = self._italic_value(self._collar)
 
         if self._upper_half:
-            value += f'Upper Half --- {self._italic_value(self._upper_half)}\n'
+            to_print['Upper Half'] = self._italic_value(self._upper_half)
 
         if self._bracelet:
-            value += f'Bracelet --- {self._italic_value(self._bracelet)}\n'
+            to_print['Bracelet'] = self._italic_value(self._bracelet)
 
         if self._lower_half:
-            value += f'Lower Half --- {self._italic_value(self._lower_half)}\n'
+            to_print['Lower Half'] = self._italic_value(self._lower_half)
 
         if self._shoes:
-            value += f'Shoes --- {self._italic_value(self._shoes)}\n'
+            to_print['Shoes'] = self._italic_value(self._shoes)
+
+        value = self.get_printable_output(to_print)
 
         return value
 
     @staticmethod
     def _italic_value(s: ClothingPart):
         return f'\x1B[3m{s}\x1B[0m'
+
+    @staticmethod
+    def get_printable_output(p: dict):
+        to_print = ''
+
+        keys = list(p.keys())
+        items = list(p.values())
+        biggest_key = ''
+        biggest_item = ''
+
+        for i in range(len(p)):
+            if len(keys[i]) > len(biggest_key):
+                biggest_key = keys[i]
+            if len(items[i]) > len(biggest_item):
+                biggest_item = items[i]
+
+        biggest_key = len(biggest_key)
+        biggest_item = len(biggest_item)
+
+        for i in range(len(p)):
+            t: str = keys[i]
+            t = t.ljust(biggest_key)
+
+            to_print += t
+            to_print += '  ---  '
+
+            t: str = items[i]
+            t = t.ljust(biggest_item)
+            to_print += t + '\n'
+
+        return to_print
